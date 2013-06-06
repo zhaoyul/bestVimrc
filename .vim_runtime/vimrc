@@ -1,25 +1,17 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Maintainer: amix the lucky stiff
-"             http://amix.dk - amix@amix.dk
+" Maintainer: Kevin Li
+"             http://....
 "
-" Version: 3.6 - 25/08/10 14:40:30
-"
-" Blog_post: 
-"       http://amix.dk/blog/post/19486#The-ultimate-vim-configuration-vimrc
-" Syntax_highlighted:
-"       http://amix.dk/vim/vimrc.html
-" Raw_version: 
-"       http://amix.dk/vim/vimrc.txt
+" Version: 1.1 2013/06/06
 "
 " How_to_Install_on_Unix:
 "    $ mkdir ~/.vim_runtime
-"    $ svn co svn://orangoo.com/vim ~/.vim_runtime
-"    $ cat ~/.vim_runtime/install.sh
+"    $ git clone ....
 "    $ sh ~/.vim_runtime/install.sh <system>
 "      <sytem> can be `mac`, `linux` or `windows`
 "
 " How_to_Upgrade:
-"    $ svn update ~/.vim_runtime
+"    $ git pull origin master
 "
 " Sections:
 "    -> General
@@ -36,17 +28,12 @@
 "    -> Editing mappings
 "
 "    -> Cope
-"    -> Minibuffer plugin
 "    -> Omni complete functions
 "    -> Python section
 "    -> JavaScript section
 "
 "
 " Plugins_Included:
-"     > minibufexpl.vim - http://www.vim.org/scripts/script.php?script_id=159
-"       Makes it easy to get an overview of buffers:
-"           info -> :e ~/.vim_runtime/plugin/minibufexpl.vim
-" 
 "     > bufexplorer - http://www.vim.org/scripts/script.php?script_id=42
 "       Makes it easy to switch between buffers:
 "           info -> :help bufExplorer
@@ -95,7 +82,7 @@ set history=700
 filetype plugin on
 filetype indent on
 " Enable omni completion
-set ofu=syntaxcomplete#Complete
+"set ofu=syntaxcomplete#Complete
 " Set to auto read when a file is changed from the outside
 set autoread
 
@@ -127,8 +114,40 @@ let g:pydiction_location = '~/.vim/tools/pydiction/complete-dict'
 "defalut g:pydiction_menu_height == 15
 "let g:pydiction_menu_height = 20
 let g:Tlist_Ctags_Cmd='/usr/local/bin/ctags' 
-noremap <F8> :setl noai nocin nosi inde=<CR>
-map <F12> :!python %<CR>
+"noremap <F8> :setl noai nocin nosi inde=<CR>
+map <F12> :w <CR><esc>:!python %<CR>
+execute pathogen#infect('bundle/{}', '~/.vim_runtime/bundle/{}')
+
+nmap \l :setlocal number!<CR>
+nmap \o :set paste!<CR>
+
+let g:syntastic_python_checkers = ['flake8']
+"let g:syntastic_check_on_open=1
+
+nmap <leader>u :CtrlPBuffer<CR>
+let g:ctrlp_map = '<Leader>t'
+let g:ctrlp_match_window_bottom = 0
+let g:ctrlp_match_window_reversed = 0
+let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_dotfiles = 0
+let g:ctrlp_switch_buffer = 0
+
+nmap \e :NERDTreeToggle<CR>
+nmap \t :TlistToggle<cr>
+
+"let g:Powerline_symbols = 'fancy'
+"powerline{
+set guifont=PowerlineSymbols\ for\ Powerline
+set nocompatible
+"set t_Co=256
+let g:Powerline_symbols = 'fancy'
+"let g:loaded_fugitive = 1
+
+"}
+
+"set font size for macVim
+set guifont=Menlo\ Regular:h14
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -140,7 +159,7 @@ set wildmenu "Turn on WiLd menu
 
 set ruler "Always show current position
 
-set cmdheight=2 "The commandbar height
+set cmdheight=1 "The commandbar height
 
 set hid "Change buffer - without saving
 
@@ -461,21 +480,21 @@ set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Parenthesis/bracket expanding
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-vnoremap $1 <esc>`>a)<esc>`<i(<esc>
-vnoremap $2 <esc>`>a]<esc>`<i[<esc>
-vnoremap $3 <esc>`>a}<esc>`<i{<esc>
-vnoremap $$ <esc>`>a"<esc>`<i"<esc>
-vnoremap $q <esc>`>a'<esc>`<i'<esc>
-vnoremap $e <esc>`>a"<esc>`<i"<esc>
+"vnoremap $1 <esc>`>a)<esc>`<i(<esc>
+"vnoremap $2 <esc>`>a]<esc>`<i[<esc>
+"vnoremap $3 <esc>`>a}<esc>`<i{<esc>
+"vnoremap $$ <esc>`>a"<esc>`<i"<esc>
+"vnoremap $q <esc>`>a'<esc>`<i'<esc>
+"vnoremap $e <esc>`>a"<esc>`<i"<esc>
 
 " Map auto complete of (, ", ', [
-inoremap $1 ()<esc>i
-inoremap $2 []<esc>i
-inoremap $3 {}<esc>i
-inoremap $4 {<esc>o}<esc>O
-inoremap $q ''<esc>i
-inoremap $e ""<esc>i
-inoremap $t <><esc>i
+"inoremap $1 ()<esc>i
+"inoremap $2 []<esc>i
+"inoremap $3 {}<esc>i
+"inoremap $4 {<esc>o}<esc>O
+"inoremap $q ''<esc>i
+"inoremap $e ""<esc>i
+"inoremap $t <><esc>i
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -488,7 +507,7 @@ iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
 " => Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Remap VIM 0
-map 0 ^
+"map 0 ^
 
 "Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
 nmap <M-j> mz:m+<cr>`z
@@ -526,27 +545,27 @@ map <leader>p :cp<cr>
 """"""""""""""""""""""""""""""
 " => bufExplorer plugin
 """"""""""""""""""""""""""""""
-let g:bufExplorerDefaultHelp=0
-let g:bufExplorerShowRelativePath=1
-let g:bufExplorerFindActive=1
-let g:bufExplorerSortBy='name'
-map <leader>o :BufExplorer<cr>
+"let g:bufExplorerDefaultHelp=0
+"let g:bufExplorerShowRelativePath=1
+"let g:bufExplorerFindActive=1
+"let g:bufExplorerSortBy='name'
+"map <leader>o :BufExplorer<cr>
 
 
 """"""""""""""""""""""""""""""
 " => Minibuffer plugin
 """"""""""""""""""""""""""""""
-let g:miniBufExplModSelTarget = 1
-let g:miniBufExplorerMoreThanOne = 0
-let g:miniBufExplModSelTarget = 0
-let g:miniBufExplUseSingleClick = 1
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplVSplit = 30
-let g:miniBufExplSplitBelow=1
+"let g:miniBufExplModSelTarget = 1
+""let g:miniBufExplorerMoreThanOne = 0
+"let g:miniBufExplModSelTarget = 0
+"let g:miniBufExplUseSingleClick = 1
+"let g:miniBufExplMapWindowNavVim = 1
+"let g:miniBufExplVSplit = 30
+"let g:miniBufExplSplitBelow=1
+"
+"autocmd BufRead,BufNew :call UMiniBufExplorer
 
-autocmd BufRead,BufNew :call UMiniBufExplorer
-
-map <leader>u :TMiniBufExplorer<cr>
+"map <leader>u :TMiniBufExplorer<cr>
 
 
 
